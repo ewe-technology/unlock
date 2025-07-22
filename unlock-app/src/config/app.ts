@@ -36,7 +36,7 @@ const dev = {
     network: 84532,
     contract: '0xB37D532429940f3C59DA0aed4D0692bFfa9AF316',
   },
-  privyAppId: process.env.NEXT_PUBLIC_PRIVY_APP_ID || staging.privyAppId,
+  privyAppId: 'cmdcy15wu01ibk10mybkrq0ej',
 }
 
 const production = {

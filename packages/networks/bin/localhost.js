@@ -17,7 +17,7 @@ const defaultLocalhost = {
     symbol: 'ETH',
   },
   provider: 'http://127.0.0.1:8545',
-  publicLockVersionToDeploy: 14,
+  publicLockVersionToDeploy: 15,
   publicProvider: 'http://127.0.0.1:8545',
   subgraph: {
     endpoint: '',

@@ -129,8 +129,8 @@ const config = {
   signerKeyBase64: process.env.APPLE_WALLET_SIGNER_KEY,
   wwdrBase64: process.env.APPLE_WALLET_WWDR_CERT,
   signerKeyPassphrase: process.env.APPLE_WALLET_SIGNER_KEY_PASSPHRASE,
-  privyAppId: process.env.PRIVY_APP_ID,
-  privyAppSecret: process.env.PRIVY_APP_SECRET,
+  privyAppId: 'cmdcy15wu01ibk10mybkrq0ej',
+  privyAppSecret: '',
   eventCasterApiKey: process.env.EVENTCASTER_API_KEY,
   // Secret key to authenticate with the provider service
   providerSecretKey: process.env.PROVIDER_SECRET_KEY,

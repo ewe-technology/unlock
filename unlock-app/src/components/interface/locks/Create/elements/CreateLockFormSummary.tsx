@@ -96,7 +96,7 @@ export const CreateLockFormSummary = ({
   transactionHash = '',
   lockAddress,
 }: CreateLockFormSummaryProps) => {
-  const requiredConfirmations = 2 // Required confirmations block to switch to 'deployed' status
+  const requiredConfirmations = 1 // Required confirmations block to switch to 'deployed' status
   const web3Service = useWeb3Service()
   const { networks } = useConfig()
   const { unlimitedDuration = false, unlimitedQuantity = false } =
@@ -127,7 +127,7 @@ export const CreateLockFormSummary = ({
 
   const hasError = isError && data
   const isDeployed =
-    data && data.confirmations > requiredConfirmations && !isError
+    data && data.confirmations >= requiredConfirmations && !isError
 
   const symbol = formData?.symbol || nativeCurrency.symbol
 
