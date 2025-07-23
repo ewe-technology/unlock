@@ -23,6 +23,7 @@ export interface HardhatUnlockPlugin {
   createLock: CreateLockFunction
   getLockVersion: GetLockVersionFunction
   deployProtocol: DeployProtocolFunction
+  deployEWEProtocol: DeployProtocolFunction
   getLockContract: GetLockContractFunction
   deployAndSetTemplate: DeployAndSetTemplate
   getUnlockContract: GetUnlockContractFunction
@@ -42,7 +43,11 @@ const networks = Object.keys(defaultNetworks).reduce((parsed, chainId) => {
 extendEnvironment((hre) => {
   hre.unlock = lazyObject(() => {
     const { createLock } = require('./createLock')
-    const { deployProtocol, deployAndSetTemplate } = require('./deployProtocol')
+    const {
+      deployProtocol,
+      deployAndSetTemplate,
+      deployEWEProtocol,
+    } = require('./deployProtocol')
     const { getLockVersion } = require('./getLockVersion')
     const { getUnlockContract } = require('./getUnlockContract')
     const { getLockContract } = require('./getLockContract')
@@ -52,6 +57,8 @@ extendEnvironment((hre) => {
       createLock: (args) => createLock(hre, args),
       deployProtocol: (unlockVersion, lockVersion, confirmations) =>
         deployProtocol(hre, unlockVersion, lockVersion, confirmations),
+      deployEWEProtocol: (unlockVersion, lockVersion, confirmations) =>
+        deployEWEProtocol(hre, unlockVersion, lockVersion, confirmations),
       deployAndSetTemplate: (version, confirmations) =>
         deployAndSetTemplate(hre, version, confirmations),
       getLockVersion: (lockAddress) => getLockVersion(hre, lockAddress),

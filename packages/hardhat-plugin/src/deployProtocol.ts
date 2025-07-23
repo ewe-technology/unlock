@@ -1,5 +1,6 @@
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
 import type { Contract } from 'ethers'
+import { contracts } from '@unlock-protocol/contracts'
 
 import { getContractFactory, deployUpgreadableContract } from './utils'
 import { UNLOCK_LATEST_VERSION, PUBLIC_LOCK_LATEST_VERSION } from './constants'
@@ -74,6 +75,29 @@ export async function deployAndSetTemplate(
   return publicLock
 }
 
+export async function deployAndSetEWETemplate(
+  hre: HardhatRuntimeEnvironment,
+  lockVersion = PUBLIC_LOCK_LATEST_VERSION,
+  confirmations = 5
+) {
+  const [signer] = await hre.ethers.getSigners()
+  const unlock = await getUnlockContract(hre)
+
+  // deploy PublicLock template
+  const publicLock = await deployPublicLockEWE(hre, lockVersion, confirmations)
+  const version = await publicLock.getFunction('publicLockVersion')()
+  const publicLockAddress = await publicLock.getAddress()
+
+  // set lock template
+  await unlock.connect(signer).getFunction('addLockTemplate')(
+    publicLockAddress,
+    version
+  )
+  await unlock.connect(signer).getFunction('setLockTemplate')(publicLockAddress)
+
+  return publicLock
+}
+
 export async function deployPublicLock(
   hre: HardhatRuntimeEnvironment,
   version = PUBLIC_LOCK_LATEST_VERSION,
@@ -98,6 +122,35 @@ export async function deployPublicLock(
   return publicLock
 }
 
+export async function deployPublicLockEWE(
+  hre: HardhatRuntimeEnvironment,
+  version = PUBLIC_LOCK_LATEST_VERSION,
+  confirmations = 5
+) {
+  const [signer] = await hre.ethers.getSigners()
+
+  // get bytecode
+  const { bytecode, abi } = contracts['PublicLockEWE']
+  const PublicLock = await hre.ethers.getContractFactory(abi, bytecode, signer)
+  console.log('deploy PublicLockEWE version', version)
+  // const PublicLock = await getContractFactory(
+  //   hre,
+  //   'PublicLock',
+  //   version,
+  //   signer
+  // )
+  const publicLock = await PublicLock.deploy()
+  await publicLock.deploymentTransaction()?.wait(confirmations)
+  const publicLockAddress = await publicLock.getAddress()
+
+  console.log(
+    `PUBLICLOCK > deployed to : ${publicLockAddress} (${await publicLock.getFunction(
+      'publicLockVersion'
+    )()})`
+  )
+  return publicLock
+}
+
 export async function deployProtocol(
   hre: HardhatRuntimeEnvironment,
   unlockVersion = UNLOCK_LATEST_VERSION,
@@ -109,6 +162,28 @@ export async function deployProtocol(
 
   // 3. deploy and set template
   const publicLock = await deployAndSetTemplate(hre, lockVersion, confirmations)
+
+  return {
+    unlock,
+    publicLock,
+  }
+}
+
+export async function deployEWEProtocol(
+  hre: HardhatRuntimeEnvironment,
+  unlockVersion = UNLOCK_LATEST_VERSION,
+  lockVersion = PUBLIC_LOCK_LATEST_VERSION,
+  confirmations = 1 // default to 1, as this is mostly for use on local dev
+) {
+  // 1. deploy Unlock
+  const unlock = await deployUnlock(hre, unlockVersion, confirmations)
+
+  // 3. deploy and set template
+  const publicLock = await deployAndSetEWETemplate(
+    hre,
+    lockVersion,
+    confirmations
+  )
 
   return {
     unlock,

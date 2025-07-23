@@ -13,6 +13,8 @@ COPY --chown=node package.json package.json
 COPY --chown=node yarn.lock yarn.lock
 COPY --chown=node .yarn .yarn
 COPY --chown=node .yarnrc.yml .yarnrc.yml
+COPY --chown=node package.tgz package.tgz
+COPY --chown=node contract_package.tgz contract_package.tgz
 
 # add files
 COPY --chown=node . .

@@ -8,12 +8,13 @@
     "lint": "eslint",
     "packages": "yarn workspaces foreach --recursive --from '{@unlock-protocol/types,@unlock-protocol/core,@unlock-protocol/eslint-config,@unlock-protocol/hardhat-helpers,@unlock-protocol/express,@unlock-protocol/contracts,@unlock-protocol/networks,@unlock-protocol/paywall,@unlock-protocol/unlock-js,@unlock-protocol/crypto-icon,@unlock-protocol/ui,@unlock-protocol/hardhat-plugin,@unlock-protocol/email-templates}'",
     "provision": "hardhat run scripts/provision.ts",
+    "ewe_provision": "hardhat run scripts/ewe_provision.ts",
     "start": "hardhat node"
   },
   "dependencies": {
     "@nomicfoundation/hardhat-ethers": "3.0.8",
-    "@unlock-protocol/contracts": "latest",
-    "@unlock-protocol/hardhat-plugin": "latest",
+    "@unlock-protocol/contracts": "./contract_package.tgz",
+    "@unlock-protocol/hardhat-plugin": "./package.tgz",
     "@unlock-protocol/networks": "latest",
     "eslint": "9.30.0",
     "ethers": "6.14.0",
