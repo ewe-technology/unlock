@@ -65,6 +65,8 @@
     "start": "yarn start:infra && yarn start:apps",
     "start:infra": "./scripts/start-infra.sh",
     "start:apps": "./scripts/start-apps.sh",
+    "start:eweInfra": "./scripts/ewe-start-infra.sh",
+    "ewe": "yarn start:eweInfra && yarn start:apps",
     "logs:infra": "./scripts/start/logs.sh",
     "stop": "./scripts/stop.sh",
     "nuke": "./scripts/nuke.sh",
